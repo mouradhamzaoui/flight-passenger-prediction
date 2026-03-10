@@ -1,0 +1,118 @@
+# ─── Delta Airlines ML Platform — CI/CD Pipeline ─────────────────────────────
+name: Delta Airlines ML — CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  PYTHON_VERSION: "3.11"
+  CARRIER: "DL"
+
+jobs:
+
+  # ─── JOB 1 : Tests ──────────────────────────────────────────────────────────
+  test:
+    name: 🧪 Tests & Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: 📦 Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov httpx
+
+      - name: 🔧 Generate ML artifacts
+        run: |
+          python data/download_bts.py
+          python poc/feature_engineering.py
+          python poc/train_models.py
+
+      - name: 🧪 Run tests with coverage
+        run: |
+          pytest tests/ -v \
+            --tb=short \
+            --cov=backend \
+            --cov-report=term-missing \
+            --cov-report=xml \
+            -q
+
+      - name: 📊 Upload coverage report
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+
+  # ─── JOB 2 : Build Docker ────────────────────────────────────────────────────
+  docker-build:
+    name: 🐳 Docker Build Validation
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Generate ML artifacts
+        run: |
+          pip install -r requirements.txt
+          python data/download_bts.py
+          python poc/feature_engineering.py
+          python poc/train_models.py
+
+      - name: 🐳 Build API image
+        run: |
+          docker build -f deployment/Dockerfile.api \
+            -t delta-api:${{ github.sha }} .
+
+      - name: 🐳 Build Streamlit image
+        run: |
+          docker build -f deployment/Dockerfile.streamlit \
+            -t delta-streamlit:${{ github.sha }} .
+
+      - name: ✅ Verify API container starts
+        run: |
+          docker run -d --name test-api \
+            -p 8000:8000 \
+            delta-api:${{ github.sha }}
+          sleep 15
+          curl -f http://localhost:8000/health || exit 1
+          docker stop test-api
+
+  # ─── JOB 3 : Code Quality ────────────────────────────────────────────────────
+  quality:
+    name: 🔍 Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: 📦 Install linters
+        run: pip install flake8
+
+      - name: 🔍 Flake8 lint
+        run: |
+          flake8 backend/ \
+            --max-line-length=100 \
+            --exclude=__pycache__ \
+            --count --statistics
+        continue-on-error: true
