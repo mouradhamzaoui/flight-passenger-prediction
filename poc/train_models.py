@@ -122,13 +122,30 @@ def log_run(model, model_name, params, X_tr, y_tr, X_v, y_v, X_te, y_te, flavor=
         mlflow.log_metric("cv_r2_mean", round(cv_scores.mean(), 4))
         mlflow.log_metric("cv_r2_std",  round(cv_scores.std(),  4))
 
-        # Log model — compatible toutes versions MLflow
+        # Log model — signature + input example
+        input_example = X_tr.iloc[:3]
+        signature = mlflow.models.infer_signature(X_tr, model.predict(X_tr))
         if flavor == "xgboost":
-            mlflow.xgboost.log_model(model, artifact_path="model")
+            mlflow.xgboost.log_model(
+                model,
+                artifact_path="model",
+                signature=signature,
+                input_example=input_example,
+            )
         elif flavor == "lightgbm":
-            mlflow.lightgbm.log_model(model, artifact_path="model")
+            mlflow.lightgbm.log_model(
+                model,
+                artifact_path="model",
+                signature=signature,
+                input_example=input_example,
+            )
         else:
-            mlflow.sklearn.log_model(model, artifact_path="model")
+            mlflow.sklearn.log_model(
+                model,
+                artifact_path="model",
+                signature=signature,
+                input_example=input_example,
+            )
 
         # Feature importance
         if hasattr(model, "feature_importances_"):
