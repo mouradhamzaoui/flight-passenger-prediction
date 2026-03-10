@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-03-09T23:44:00.559037",
+  "carrier": "DL",
+  "model": "LightGBM",
+  "model_mae": 0.3633,
+  "model_r2": 0.9991,
+  "reference_period": "2019-2021",
+  "current_period": "2022-2023",
+  "reference_samples": 22321,
+  "current_samples": 19859,
+  "drift_share": 0.4706,
+  "n_drifted_columns": 8,
+  "ref_lf_mean": 68.1,
+  "cur_lf_mean": 79.35,
+  "lf_delta": -11.25,
+  "alerts": [
+    {
+      "level": "\ud83d\udfe1 WARNING",
+      "type": "DATA_DRIFT",
+      "message": "Drift mod\u00e9r\u00e9 47.1%",
+      "action": "Surveillance renforc\u00e9e"
+    },
+    {
+      "level": "\ud83d\udfe1 WARNING",
+      "type": "LF_SHIFT",
+      "message": "LF shift: 68.1%\u219279.3% (\u0394=-11.2%)",
+      "action": "V\u00e9rifier donn\u00e9es source"
+    },
+    {
+      "level": "\ud83d\udfe2 OK",
+      "type": "MODEL_MAE",
+      "message": "MAE excellente: 0.363%",
+      "action": "Aucune action"
+    },
+    {
+      "level": "\ud83d\udfe2 OK",
+      "type": "CARRIER_CHECK",
+      "message": "100% Delta Air Lines (DL)",
+      "action": "Aucune action"
+    }
+  ]
+}

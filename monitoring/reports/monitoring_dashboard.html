@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Delta Airlines — ML Monitoring</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet">
+<style>
+  *    { margin:0;padding:0;box-sizing:border-box }
+  body { background:#0D1117;color:#E6EDF3;font-family:'Inter',sans-serif;padding:32px }
+  h1   { font-size:1.8rem;color:#E31837;margin-bottom:4px }
+  .sub { color:#8B949E;font-size:0.9rem;margin-bottom:32px }
+  .grid{ display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px }
+  .card{ background:#161B22;border:1px solid #30363D;border-radius:12px;
+          padding:20px;text-align:center;border-top:3px solid #E31837 }
+  .val { font-size:1.8rem;font-weight:700;color:#E31837 }
+  .lbl { font-size:0.8rem;color:#8B949E;margin-top:4px }
+  table{ width:100%;border-collapse:collapse;background:#161B22;
+          border-radius:12px;overflow:hidden;margin-bottom:32px }
+  th   { background:#21262D;padding:12px 16px;text-align:left;
+          font-size:0.85rem;color:#8B949E }
+  td   { padding:12px 16px;border-top:1px solid #30363D;font-size:0.85rem }
+  .links{ display:grid;grid-template-columns:repeat(3,1fr);gap:12px }
+  .link{ background:#161B22;border:1px solid #30363D;border-radius:8px;
+          padding:16px;text-align:center }
+  .link a{ color:#58A6FF;text-decoration:none;font-weight:600 }
+  .sec { font-size:1rem;font-weight:600;color:#C8A96E;
+          border-left:4px solid #E31837;padding-left:12px;margin:24px 0 12px }
+</style>
+</head>
+<body>
+<h1>✈️ Delta Air Lines — ML Monitoring Dashboard</h1>
+<div class="sub">Evidently AI | Carrier: DL Only | 2026-03-09 23:44</div>
+
+<div class="grid">
+  <div class="card"><div class="val">LightGBM</div>
+    <div class="lbl">🤖 Production Model</div></div>
+  <div class="card"><div class="val">0.363%</div>
+    <div class="lbl">📉 MAE</div></div>
+  <div class="card"><div class="val">47.1%</div>
+    <div class="lbl">🌊 Data Drift</div></div>
+  <div class="card"><div class="val">79.3%</div>
+    <div class="lbl">📊 Current Avg LF</div></div>
+</div>
+
+<div class="sec">🚨 Alerts</div>
+<table>
+  <thead><tr><th>Level</th><th>Type</th><th>Message</th><th>Action</th></tr></thead>
+  <tbody><tr>
+      <td style="color:#E3B341;font-weight:700">🟡 WARNING</td>
+      <td>DATA_DRIFT</td>
+      <td>Drift modéré 47.1%</td>
+      <td>Surveillance renforcée</td>
+    </tr><tr>
+      <td style="color:#E3B341;font-weight:700">🟡 WARNING</td>
+      <td>LF_SHIFT</td>
+      <td>LF shift: 68.1%→79.3% (Δ=-11.2%)</td>
+      <td>Vérifier données source</td>
+    </tr><tr>
+      <td style="color:#3FB950;font-weight:700">🟢 OK</td>
+      <td>MODEL_MAE</td>
+      <td>MAE excellente: 0.363%</td>
+      <td>Aucune action</td>
+    </tr><tr>
+      <td style="color:#3FB950;font-weight:700">🟢 OK</td>
+      <td>CARRIER_CHECK</td>
+      <td>100% Delta Air Lines (DL)</td>
+      <td>Aucune action</td>
+    </tr></tbody>
+</table>
+
+<div class="sec">📊 Evidently Reports</div>
+<div class="links">
+  <div class="link"><div style="font-size:1.5rem">🌊</div>
+    <a href="data_drift_report.html">Data Drift Report</a>
+    <div style="font-size:0.75rem;color:#8B949E;margin-top:4px">
+      8/17 features drifted</div></div>
+  <div class="link"><div style="font-size:1.5rem">🤖</div>
+    <a href="model_performance_report.html">Model Performance</a>
+    <div style="font-size:0.75rem;color:#8B949E;margin-top:4px">
+      MAE=0.363%</div></div>
+  <div class="link"><div style="font-size:1.5rem">📉</div>
+    <a href="feature_drift_report.html">Feature Drift</a>
+    <div style="font-size:0.75rem;color:#8B949E;margin-top:4px">
+      6 key features</div></div>
+</div>
+</body></html>

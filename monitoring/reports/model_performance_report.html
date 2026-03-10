@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<title>Model Performance</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet">
+<style>
+  body{background:#0D1117;color:#E6EDF3;font-family:'Inter',sans-serif;padding:32px}
+  h1{color:#E31837;margin-bottom:24px}
+  table{width:100%;border-collapse:collapse;background:#161B22;border-radius:12px}
+  th{background:#21262D;padding:14px;text-align:left;color:#8B949E}
+  td{padding:14px;border-top:1px solid #30363D}
+  .good{color:#3FB950;font-weight:700}
+  .warn{color:#E3B341;font-weight:700}
+</style></head>
+<body>
+<h1>🤖 Delta Airlines — Model Performance Report</h1>
+<p style="color:#8B949E;margin-bottom:24px">
+  LightGBM | Carrier: DL | Reference vs Current
+</p>
+<table>
+  <thead>
+    <tr><th>Period</th><th>Samples</th><th>MAE (%)</th>
+        <th>RMSE (%)</th><th>R²</th><th>MAPE (%)</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Reference 2019-2021</td>
+      <td>22,321</td>
+      <td class="good">0.285</td>
+      <td class="good">0.407</td>
+      <td class="good">0.9996</td>
+      <td class="good">0.47%</td>
+    </tr>
+    <tr>
+      <td>Current 2022-2023</td>
+      <td>19,859</td>
+      <td class="good">0.27</td>
+      <td class="good">0.375</td>
+      <td class="good">0.9989</td>
+      <td class="good">0.35%</td>
+    </tr>
+  </tbody>
+</table>
+<div style="margin-top:24px;padding:16px;background:#161B22;
+     border-radius:12px;border-left:4px solid #3FB950">
+  <b style="color:#3FB950">✅ Model Performance — EXCELLENT</b><br>
+  <span style="color:#8B949E">
+    MAE=0.363% | R²=0.9991 |
+    Standard Airbus/Amadeus MLOps 2026
+  </span>
+</div>
+</body></html>
