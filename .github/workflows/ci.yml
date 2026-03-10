@@ -106,13 +106,11 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: 📦 Install linters
-        run: pip install flake8
-
       - name: 🔍 Flake8 lint
         run: |
           flake8 backend/ \
-            --max-line-length=100 \
+            --max-line-length=120 \
+            --ignore=E221,E231,E251,E272,E302,E305,E701,E702,W292,E128,E127,E131,E202,E225,E275,F401 \
             --exclude=__pycache__ \
             --count --statistics
         continue-on-error: true

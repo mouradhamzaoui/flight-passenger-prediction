@@ -122,27 +122,13 @@ def log_run(model, model_name, params, X_tr, y_tr, X_v, y_v, X_te, y_te, flavor=
         mlflow.log_metric("cv_r2_mean", round(cv_scores.mean(), 4))
         mlflow.log_metric("cv_r2_std",  round(cv_scores.std(),  4))
 
-        # Log model — MLflow 2.x compatible, no pickle warning
-        input_example = X_tr.iloc[:3]
+        # Log model — compatible toutes versions MLflow
         if flavor == "xgboost":
-            mlflow.xgboost.log_model(
-                model,
-                name="model",
-                input_example=input_example,
-            )
+            mlflow.xgboost.log_model(model, artifact_path="model")
         elif flavor == "lightgbm":
-            mlflow.lightgbm.log_model(
-                model,
-                name="model",
-                input_example=input_example,
-            )
+            mlflow.lightgbm.log_model(model, artifact_path="model")
         else:
-            mlflow.sklearn.log_model(
-                model,
-                name="model",
-                serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
-                input_example=input_example,
-            )
+            mlflow.sklearn.log_model(model, artifact_path="model")
 
         # Feature importance
         if hasattr(model, "feature_importances_"):
